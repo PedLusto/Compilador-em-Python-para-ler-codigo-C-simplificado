@@ -1,0 +1,21 @@
+começamos o codigo importando a biblioteca re do regex, que nos ajudará a lidar com o a analise e scanneamento de texto.
+criamos uma classe token que define um objeto com tipo, valor, linha, coluna e uma função de print para melhor representação no terminal
+outra classe é a Lexer, que define varias padroes e implementa a função principal do nosso lexer.
+token_specification é uma variável essencial pro funvionamento uma vez que define cada tipo de token possivel e será usado pelo regex como referencia de busca
+keywrods são as palavras reservadas
+o inicio da classe é definida algumas variaveis e o code-fonte é recebido
+a função tokenizen é a principal
+ela setta uma lista que sera completa com todos os tokens
+enquanto o codigo ainda existir
+match é iniciada como none
+um for vai percorrer todas as possibilidades possiveis de match
+caso seja newline, apenas muda as configurações de linha e coluna
+skip muda coluna com tamanho dos espaços
+commentario é ignorado e deletado do texto
+se for um identificador e estiver em uma das palavras chave, ele na verdade é uma palavra chave e é salvo
+tirando esses casos o tekn é adicionado a lista com suas propriedades e removido do texto apos ser devidamente tratado
+codigo tratado é deletado dele mesmo
+erro é lançado caso não tenha met, ou seja, um termo desconhecido
+no fim retorna os tokens achados
+na main se cria o objeto lexer e adiciona o codigo a ser escaneado e ativa a função de tokenize
+depois printamos os tokens e conferimos o resultado.
