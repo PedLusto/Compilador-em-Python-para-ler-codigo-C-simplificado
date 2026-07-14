@@ -207,7 +207,7 @@ class Parser:
         if self.token.type in ["INT", "FLOAT", "CHAR", "BOOL"]:
             self.declaracao()
         else:
-            self.atribuicao()
+            self.atribuicao(esperar_ponto_virgula=True)
             
         label_comeco = self.new_label() + "_for_start"
         label_fim = self.new_label() + "_for_end"
@@ -220,22 +220,33 @@ class Parser:
         self.emit(f"beqz {cond_reg}, {label_fim}")
         self.free_reg(cond_reg)
         
-        while not self.match("SEPARATOR", ")"):
-            self.next_token()
+        codigo_original = self.code_segment
+        buffer_incremento = []
+        self.code_segment = buffer_incremento
+        
+        if not self.match("SEPARATOR", ")"):
+            self.atribuicao(esperar_ponto_virgula=False)
+            
         self.expect("SEPARATOR", ")")
         
+        self.code_segment = codigo_original
+        
         self.bloco()
+        
+        self.code_segment.extend(buffer_incremento)
         
         self.emit(f"j {label_comeco}")
         self.emit(f"{label_fim}:")
 
-    def atribuicao(self):
+    def atribuicao(self, esperar_ponto_virgula=True):
         left = self.token.value
         self.expect("IDENTIFIER")
         self.expect("OPERATOR", "=")
 
         reg_expr, tipo_expr = self.expressao()
-        self.expect("SEPARATOR", ";")
+        
+        if esperar_ponto_virgula:
+            self.expect("SEPARATOR", ";")
 
         if left in self.symbol_table:
             tipo_variavel = self.symbol_table[left]
