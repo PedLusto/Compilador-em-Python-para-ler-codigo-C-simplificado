@@ -1,0 +1,17 @@
+{
+    int x = 5;
+    int y = 10;
+    int resultado;
+
+    if (x > y) {
+        resultado = x;
+    } else {
+        resultado = y;
+    }
+
+    while (x < resultado) {
+        x = x + 1;
+    }
+    
+    resultado = (x * 2) + (y / 2);
+}
